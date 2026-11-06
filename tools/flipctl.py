@@ -134,7 +134,7 @@ def save_png(frame, path, scale=4):
         row = bytearray([0])
         for x in range(w * scale):
             on = px[y // scale][x // scale]
-            row += bytes([0x10, 0x10, 0x10] if on else [0xFF, 0x8C, 0x29])
+            row += bytes([0, 0, 0] if on else [0xFF, 0x8C, 0x29])  # pure black: the catalog keeps only pixels darker than 16
         raw += bytes(row)
 
     def chunk(t, d):

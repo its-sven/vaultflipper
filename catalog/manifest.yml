@@ -1,6 +1,10 @@
 # Template for https://github.com/flipperdevices/flipper-application-catalog
-# Copy to applications/Tools/vaultflipper/manifest.yml in a fork of the catalog
-# and set commit_sha to the tagged release commit.
+# 1. Fork the catalog, branch its-sven/vaultflipper_<fap_version> (e.g. its-sven/vaultflipper_0.1).
+# 2. Copy this file to applications/Tools/vaultflipper/manifest.yml and set
+#    commit_sha to the full 40-character SHA of the pushed release commit.
+# 3. Validate: python3 tools/bundle.py --nolint applications/Tools/vaultflipper/manifest.yml bundle.zip
+# Screenshots must be 512x256 (4x) with pure black pixels; tools/flipctl.py saves them that way.
+# Every update needs a higher fap_version in flipper/vaultflipper/application.fam.
 sourcecode:
   type: git
   location:
