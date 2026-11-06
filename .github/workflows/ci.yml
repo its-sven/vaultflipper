@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  companion:
+    name: Companion and native core (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Run tests
+        working-directory: companion
+        run: uv run --locked pytest -q
+
+  app:
+    name: Flipper app (${{ matrix.sdk }} SDK)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sdk: [release, dev]
+    continue-on-error: ${{ matrix.sdk == 'dev' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build with ufbt
+        id: build
+        uses: flipperdevices/flipperzero-ufbt-action@v0.1
+        with:
+          app-dir: flipper/vaultflipper
+          sdk-channel: ${{ matrix.sdk }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vaultflipper-${{ matrix.sdk }}-sdk-${{ steps.build.outputs.suffix }}
+          path: ${{ steps.build.outputs.fap-artifacts }}

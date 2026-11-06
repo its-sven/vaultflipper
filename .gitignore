@@ -1,0 +1,24 @@
+# build output
+flipper/vaultflipper/dist/
+flipper/vaultflipper/.vscode/
+flipper/vaultflipper/.clang-format
+flipper/vaultflipper/.editorconfig
+flipper/vaultflipper/.gitignore
+tests/native/vf_native
+tools/.proto-gen/
+
+# python
+companion/.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+dist/
+
+# never commit vaults or exports
+*.vfv
+*.vfi
+device.pub
+*export*.json
+
+# local
+.DS_Store

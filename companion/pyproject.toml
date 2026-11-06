@@ -1,0 +1,35 @@
+[project]
+name = "vaultflipper"
+version = "0.1.0"
+description = "Companion for VaultFlipper: Bitwarden/Vaultwarden logins, encrypted for your Flipper Zero"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Sven Würth", email = "sven@svenw.de" }]
+requires-python = ">=3.11"
+keywords = ["flipper-zero", "bitwarden", "vaultwarden", "password-manager", "offline"]
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Security :: Cryptography",
+]
+dependencies = [
+    "pynacl>=1.5",
+    "pyserial>=3.5",
+    "rich>=13.7",
+]
+
+[project.urls]
+Homepage = "https://github.com/its-sven/vaultflipper"
+Issues = "https://github.com/its-sven/vaultflipper/issues"
+Changelog = "https://github.com/its-sven/vaultflipper/blob/main/CHANGELOG.md"
+
+[project.scripts]
+vaultflipper = "vaultflipper.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"

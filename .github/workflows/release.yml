@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check that the tag matches the version
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          grep -q "^version = \"$v\"" companion/pyproject.toml
+          grep -q "__version__ = \"$v\"" companion/src/vaultflipper/__init__.py
+          grep -q "fap_version=\"${v%.*}\"" flipper/vaultflipper/application.fam
+
+      - uses: astral-sh/setup-uv@v6
+      - name: Test
+        working-directory: companion
+        run: uv run --locked pytest -q
+
+      - name: Build Flipper app
+        id: fap
+        uses: flipperdevices/flipperzero-ufbt-action@v0.1
+        with:
+          app-dir: flipper/vaultflipper
+          sdk-channel: release
+
+      - name: Build companion
+        working-directory: companion
+        run: uv build --out-dir ../dist
+
+      - name: Collect files
+        run: |
+          cp ${{ steps.fap.outputs.fap-artifacts }} dist/
+          cd dist && sha256sum * > SHA256SUMS.txt
+
+      - name: Release notes from CHANGELOG
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="$version" '
+            $0 ~ "^## \\[" v "\\]" {found=1; next}
+            found && /^## \[/ {exit}
+            found {print}
+          ' CHANGELOG.md > notes.md
+          test -s notes.md
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          body_path: notes.md
+          files: dist/*

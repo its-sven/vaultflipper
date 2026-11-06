@@ -1,0 +1,20 @@
+# Template for https://github.com/flipperdevices/flipper-application-catalog
+# Copy to applications/Tools/vaultflipper/manifest.yml in a fork of the catalog
+# and set commit_sha to the tagged release commit.
+sourcecode:
+  type: git
+  location:
+    origin: https://github.com/its-sven/vaultflipper.git
+    commit_sha: 0000000000000000000000000000000000000000
+    subdir: flipper/vaultflipper
+description: "@./docs/README.md"
+changelog: "@./docs/changelog.md"
+author: "@its-sven"
+screenshots:
+  - "./docs/screenshots/2-home.png"
+  - "./docs/screenshots/4-entries.png"
+  - "./docs/screenshots/5-card.png"
+  - "./docs/screenshots/8-codes.png"
+  - "./docs/screenshots/9-code.png"
+  - "./docs/screenshots/7-settings.png"
+  - "./docs/screenshots/1-pin.png"
