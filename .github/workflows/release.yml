@@ -39,6 +39,7 @@ jobs:
       - name: Collect files
         run: |
           cp ${{ steps.fap.outputs.fap-artifacts }} dist/
+          rm -f dist/.gitignore  # written by uv build; not a release file
           cd dist && sha256sum * > SHA256SUMS.txt
 
       - name: Release notes from CHANGELOG
